@@ -21,10 +21,8 @@ serializer_t serializer() {
   return s;
 }
 
-deserializer_t deserializer(void *buffer, FILE *file) {
+deserializer_t deserializer(void *buffer) {
   deserializer_t d = {0};
   d.buffer = buffer;
-  d.file = NULL;
-  d.type = none;
   return d;
 }

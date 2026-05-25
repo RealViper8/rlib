@@ -11,12 +11,16 @@ enum FileType {
 
 typedef struct Serializer {
   enum FileType type;
+
+  /**
+   * file: File Handle
+   * data: Data to save
+   */
   void (*write)(FILE *file, void *data);
 } serializer_t;
 
 typedef struct Deserializer {
   void *buffer;
-  FILE *file;
   enum FileType type;
 } deserializer_t;
 

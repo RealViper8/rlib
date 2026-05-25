@@ -3,6 +3,6 @@
 #include <stdio.h>
 
 int main() {
-  serializer_t s = serializer(NULL, NULL);
+  serializer_t s = serializer();
   return 0;
 }
