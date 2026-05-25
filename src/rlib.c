@@ -1,10 +1,14 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "rlib.h"
 #include <stdio.h>
 
 void s_write(FILE *file, void *data) {
-
   if (file == NULL)
-    file = fopen();
+    file = fopen("data", "w");
+
+  fwrite(data, sizeof(data), 1, file);
+  fflush(file);
+  fclose(file);
 }
 
 /**
