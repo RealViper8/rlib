@@ -5,3 +5,6 @@ target_link_libraries(example rlib)
 
 add_executable(serializer serializer.c)
 target_link_libraries(serializer rlib)
+
+add_executable(support support.cpp)
+target_link_libraries(support rlib)

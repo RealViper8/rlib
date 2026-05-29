@@ -2,10 +2,9 @@ cmake_minimum_required(VERSION 3.40)
 project(
   rlib
   VERSION 0.0.1
-  LANGUAGES C)
+  LANGUAGES C CXX)
 
 option(EXAMPLE "Build Example" OFF)
-
 include_directories(include)
 add_compile_options(-Wall -Wextra)
 

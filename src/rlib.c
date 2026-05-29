@@ -5,9 +5,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-void write_json(FILE *file, char *data, size_t len) {
-  if (file == NULL)
-    file = fopen("data", "w");
+void write_json(const char *path, char *data, size_t len) {
+  FILE *file = fopen(path, "w");
+  if (file == NULL) {
+    perror(NULL);
+    return;
+  }
 
   char *key = strtok(data, "=");
   char *val = strtok(NULL, ",");
@@ -33,26 +36,11 @@ void write_json(FILE *file, char *data, size_t len) {
   fclose(file);
 }
 
-void write(FILE *file, char *data) {
-  if (file == NULL)
-    file = fopen("data", "wb");
-  fwrite(data, sizeof(data), 1, file);
-  fflush(file);
-  fclose(file);
-}
-
 /**
  * Creates a new Serializer
  */
 serializer_t serializer() {
   serializer_t s = {0};
-  s.write = write;
   s.write_json = write_json;
   return s;
-}
-
-deserializer_t deserializer(void *buffer) {
-  deserializer_t d = {0};
-  d.buffer = buffer;
-  return d;
 }
