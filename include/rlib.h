@@ -1,27 +1,20 @@
 #ifndef _RLIB_H
 #define _RLIB_H
 
+#include <stdint.h>
 #include <stdio.h>
 
-enum FileType {
-  json = 0,
-  binary,
-  none,
-};
-
 typedef struct Serializer {
-  enum FileType type;
-
   /**
    * file: File Handle
    * data: Data to save
    */
-  void (*write)(FILE *file, void *data);
+  void (*write)(FILE *file, char *data);
+  void (*write_json)(FILE *file, char *data, size_t len);
 } serializer_t;
 
 typedef struct Deserializer {
   void *buffer;
-  enum FileType type;
 } deserializer_t;
 
 serializer_t serializer();
