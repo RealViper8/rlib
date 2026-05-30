@@ -8,3 +8,6 @@ target_link_libraries(serializer rlib)
 
 add_executable(support support.cpp)
 target_link_libraries(support rlib)
+
+add_executable(injector injector.cpp)
+target_link_libraries(injector rlib)

@@ -7,6 +7,7 @@
 
 void write_json(const char *path, char *data, size_t len) {
   FILE *file = fopen(path, "w");
+
   if (file == NULL) {
     perror(NULL);
     return;
@@ -34,6 +35,41 @@ void write_json(const char *path, char *data, size_t len) {
   fputs("\n}", file);
   fflush(file);
   fclose(file);
+}
+
+#if (OS == 0)
+void inject(injector_t *j) {
+  HANDLE processHandle;
+  PVOID remoteBuffer;
+
+  processHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, j->pid);
+  if (!processHandle) {
+    printf("OpenProcess failed: %lu\n", GetLastError());
+    return;
+  }
+
+  size_t pathSize = (strlen(j->shared_path) + 1);
+  remoteBuffer =
+      VirtualAllocEx(processHandle, NULL, pathSize, MEM_COMMIT, PAGE_READWRITE);
+  if (!remoteBuffer) {
+    printf("VirtualAllocEx failed: %lu\n", GetLastError());
+    return;
+  }
+  WriteProcessMemory(processHandle, remoteBuffer, j->shared_path, pathSize,
+                     NULL);
+  PTHREAD_START_ROUTINE routine = (PTHREAD_START_ROUTINE)GetProcAddress(
+      GetModuleHandle("Kernel32"), "LoadLibraryA");
+  CreateRemoteThread(processHandle, NULL, 0, routine, remoteBuffer, 0, NULL);
+  CloseHandle(processHandle);
+}
+#endif
+
+injector_t injector(unsigned long pid, const char *dll_path) {
+  injector_t j = {0};
+  j.pid = pid;
+  j.shared_path = dll_path;
+  j.inject = inject;
+  return j;
 }
 
 /**
