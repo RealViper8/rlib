@@ -5,6 +5,40 @@
 #include <stdlib.h>
 #include <string.h>
 
+void array_free(array_t *arr) {
+  free(arr->data);
+  arr->data = NULL;
+}
+
+void *array_get(array_t *arr, const size_t i) {
+  return (char *)arr->data + i * arr->elem_size;
+}
+
+void array_push(array_t *arr, const void *value) {
+  if (arr->size >= arr->capacity) {
+    arr->capacity *= 2;
+    arr->data = realloc(arr->data, arr->elem_size * arr->capacity);
+  }
+  memcpy((char *)arr->data + arr->size++ * arr->elem_size, value,
+         arr->elem_size);
+}
+
+array_t array(size_t capacity, size_t elem_size) {
+  if (capacity < 1) {
+    capacity = 1;
+  }
+
+  array_t arr = {0};
+  arr.get = array_get;
+  arr.push = array_push;
+  arr.free = array_free;
+  arr.data = calloc(capacity, elem_size);
+  arr.size = 0;
+  arr.capacity = capacity;
+  arr.elem_size = elem_size;
+  return arr;
+}
+
 void write_json(const char *path, char *data, size_t len) {
   FILE *file = fopen(path, "w");
 

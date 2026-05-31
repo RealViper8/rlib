@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 typedef enum {
@@ -31,6 +32,19 @@ typedef enum {
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+typedef struct Array {
+  void *data;
+  size_t capacity;
+  size_t size;
+  size_t elem_size;
+
+  void (*push)(struct Array *arr, const void *value);
+  void *(*get)(struct Array *arr, const size_t index);
+  void (*free)(struct Array *arr);
+} array_t;
+
+array_t array(size_t capacity, size_t elem_size);
 
 typedef struct {
   /**
