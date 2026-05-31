@@ -6,27 +6,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef enum {
-  Windows = 0,
-  Linux,
-} target;
-
 #if defined(_WIN32) || defined(_WIN64)
-#define OS Windows
+#define WINDOWS_OS 1
 #elif defined(__ANDROID__)
 #error "Not supported"
 #elif defined(__linux__)
-#define OS Linux
+#define LINUX_OS 1
 #else
 #error "Unkown OS"
 #endif
 
-#if (OS == 0)
+#if (WINDOWS_OS)
 #include <windows.h>
 #include <winnt.h>
 #endif
 
-#if (OS == 1)
+#if (LINUX_OS)
 #endif
 
 #ifdef __cplusplus
@@ -41,6 +36,7 @@ typedef struct Array {
 
   void (*push)(struct Array *arr, const void *value);
   void *(*get)(struct Array *arr, const size_t index);
+  void (*resize)(struct Array *arr, size_t new_size);
   void (*free)(struct Array *arr);
 } array_t;
 

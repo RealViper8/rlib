@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "rlib.h"
+#include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +13,17 @@ void array_free(array_t *arr) {
 
 void *array_get(array_t *arr, const size_t i) {
   return (char *)arr->data + i * arr->elem_size;
+}
+
+/// If the new_size is < than length it will strip the remains
+void array_resize(struct Array *arr, size_t new_size) {
+  arr->data = realloc(arr->data, new_size * arr->elem_size);
+
+  if (arr->size > new_size) {
+    arr->capacity = new_size;
+    arr->size = new_size;
+  } else
+    arr->capacity = new_size;
 }
 
 void array_push(array_t *arr, const void *value) {
@@ -31,6 +43,7 @@ array_t array(size_t capacity, size_t elem_size) {
   array_t arr = {0};
   arr.get = array_get;
   arr.push = array_push;
+  arr.resize = array_resize;
   arr.free = array_free;
   arr.data = calloc(capacity, elem_size);
   arr.size = 0;
