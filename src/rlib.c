@@ -37,7 +37,7 @@ void write_json(const char *path, char *data, size_t len) {
   fclose(file);
 }
 
-#if (OS == 0)
+#if (WINDOWS_OS)
 void inject(injector_t *j) {
   HANDLE processHandle;
   PVOID remoteBuffer;
