@@ -1,10 +1,16 @@
 #ifndef _RLIB_H
 #define _RLIB_H
 
+#ifdef __cplusplus
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#else
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#endif
 
 #if defined(_WIN32) || defined(_WIN64)
 #define WINDOWS_OS 1
@@ -30,24 +36,24 @@ extern "C" {
 
 typedef struct Array {
   void *data;
-  size_t capacity;
-  size_t size;
-  size_t elem_size;
+  uint32_t capacity;
+  uint32_t size;
+  uint32_t elem_size;
 
   void (*push)(struct Array *arr, const void *value);
-  void *(*get)(struct Array *arr, const size_t index);
-  void (*resize)(struct Array *arr, size_t new_size);
+  void *(*get)(struct Array *arr, const uint32_t index);
+  void (*resize)(struct Array *arr, uint32_t new_size);
   void (*free)(struct Array *arr);
 } array_t;
 
-array_t array(size_t capacity, size_t elem_size);
+array_t array(size_t capacity, uint32_t elem_size);
 
 typedef struct {
   /**
    * # Used for writing json data
    * If len is wrong its considered UB
    */
-  void (*write_json)(const char *path, char *data, size_t len);
+  void (*write_json)(const char *path, char *data, uint32_t len);
 } serializer_t;
 
 typedef struct Inj {

@@ -11,12 +11,12 @@ void array_free(array_t *arr) {
   arr->data = NULL;
 }
 
-void *array_get(array_t *arr, const size_t i) {
+void *array_get(array_t *arr, const uint32_t i) {
   return (char *)arr->data + i * arr->elem_size;
 }
 
 /// If the new_size is < than length it will strip the remains
-void array_resize(struct Array *arr, size_t new_size) {
+void array_resize(struct Array *arr, uint32_t new_size) {
   arr->data = realloc(arr->data, new_size * arr->elem_size);
 
   if (arr->size > new_size) {
@@ -35,7 +35,7 @@ void array_push(array_t *arr, const void *value) {
          arr->elem_size);
 }
 
-array_t array(size_t capacity, size_t elem_size) {
+array_t array(size_t capacity, uint32_t elem_size) {
   if (capacity < 1) {
     capacity = 1;
   }
@@ -52,7 +52,7 @@ array_t array(size_t capacity, size_t elem_size) {
   return arr;
 }
 
-void write_json(const char *path, char *data, size_t len) {
+void write_json(const char *path, char *data, uint32_t len) {
   FILE *file = fopen(path, "w");
 
   if (file == NULL) {
