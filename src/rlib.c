@@ -111,6 +111,11 @@ void inject(injector_t *j) {
 }
 #endif
 
+#if (LINUX_OS)
+[[deprecated("Use LD_PRELOAD instead")]]
+void inject(injector_t *j) {}
+#endif
+
 injector_t injector(unsigned long pid, const char *dll_path) {
   injector_t j = {0};
   j.pid = pid;
